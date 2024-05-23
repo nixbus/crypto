@@ -10,5 +10,5 @@ export interface NixBusPassphrases {
 
   getDefault(): Promise<Passphrase>
 
-  put(passphrase: Passphrase): Promise<void>
+  put(passphrase: Passphrase): void
 }

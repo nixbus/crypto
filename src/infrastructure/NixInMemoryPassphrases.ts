@@ -20,7 +20,7 @@ export class NixBusInMemoryPassphrases implements NixBusPassphrases {
     return this.getByVersion(this.options.defaultVersion)
   }
 
-  public async put(passphrase: Passphrase): Promise<void> {
+  public put(passphrase: Passphrase): void {
     this.passphrases[passphrase.version] = passphrase
   }
 }

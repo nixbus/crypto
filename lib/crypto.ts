@@ -6,18 +6,18 @@ import { NixBusInMemoryPassphrases } from 'src/infrastructure/NixInMemoryPassphr
 export type { NixBusCrypto } from 'src/domain/NixBusCrypto'
 
 let nixBusCrypto: NixBusCrypto | null = null
-export const getNixBusCrypto = async ({
+export const getNixBusCrypto = ({
   defaultPassphraseVersion,
   passphrases,
 }: {
   defaultPassphraseVersion: string
   passphrases: Passphrase[]
-}): Promise<NixBusCrypto> => {
+}): NixBusCrypto => {
   if (nixBusCrypto) {
     return nixBusCrypto
   }
 
-  nixBusCrypto = await createNixBusCrypto({
+  nixBusCrypto = createNixBusCrypto({
     defaultPassphraseVersion,
     passphrases,
   })
@@ -25,13 +25,13 @@ export const getNixBusCrypto = async ({
   return nixBusCrypto
 }
 
-export const createNixBusCrypto = async ({
+export const createNixBusCrypto = ({
   defaultPassphraseVersion,
   passphrases,
 }: {
   defaultPassphraseVersion: string
   passphrases: Passphrase[]
-}): Promise<NixBusCrypto> => {
+}): NixBusCrypto => {
   try {
     if (!crypto) {
       throw new Error(
@@ -48,7 +48,7 @@ export const createNixBusCrypto = async ({
     defaultVersion: defaultPassphraseVersion,
   })
 
-  await Promise.all(passphrases.map((p) => nixBusPassphrases.put(p)))
+  passphrases.forEach((p) => nixBusPassphrases.put(p))
 
   const ciphers = new NixBusCiphers()
   nixBusCrypto = new NixBusCrypto({ passphrases: nixBusPassphrases, ciphers })
