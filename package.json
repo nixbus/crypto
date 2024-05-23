@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "npm-run-all -l -p build:*",
-    "build:dist": "node scripts/build-lib.js",
+    "build:dist": "node scripts/build-lib.mjs",
     "build:types": "dts-bundle-generator -o dist/crypto.d.ts lib/crypto.ts",
     "bump": "npm version patch -m \"bump: %s\" && git push --follow-tags",
     "clean": "rm -rf build playwright-report test-results",
