@@ -3,6 +3,8 @@ import { NixBusCiphers } from 'src/domain/NixBusCiphers'
 import { NixBusCrypto } from 'src/domain/NixBusCrypto'
 import { NixBusInMemoryPassphrases } from 'src/infrastructure/NixInMemoryPassphrases'
 
+export type { NixBusCrypto } from 'src/domain/NixBusCrypto'
+
 let nixBusCrypto: NixBusCrypto | null = null
 export const getNixBusCrypto = async ({
   defaultPassphraseVersion,
