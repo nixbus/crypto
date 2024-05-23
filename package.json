@@ -5,6 +5,13 @@
   "module": "dist/crypto.js",
   "main": "dist/cjs/crypto.js",
   "typings": "dist/crypto.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/crypto.js",
+      "require": "./dist/cjs/crypto.js"
+    }
+  },
   "files": [
     "dist"
   ],
