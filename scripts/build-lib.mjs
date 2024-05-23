@@ -1,4 +1,6 @@
 import { build } from 'esbuild'
+import path from 'node:path'
+import { writeFile } from 'node:fs/promises'
 
 async function main() {
   const options = {
@@ -26,10 +28,15 @@ async function main() {
     }),
     build({
       ...options,
-      outdir: './dist/cjs',
+      outdir: './dist/cjs/lib',
       format: 'cjs',
     }),
   ])
+
+  const wrapperContent = `module.exports = require('./lib/crypto.js');`;
+  const wrapperPath = path.join(process.cwd(), 'dist/cjs/crypto.js');
+
+  await writeFile(wrapperPath, wrapperContent, 'utf8');
 }
 
 main()
