@@ -3,13 +3,13 @@
   "version": "0.0.14",
   "description": "NixBus Crypto",
   "module": "dist/crypto.js",
-  "main": "dist/cjs/crypto.js",
+  "main": "dist/cjs/crypto.cjs",
   "typings": "dist/crypto.d.ts",
   "type": "module",
   "exports": {
     ".": {
       "import": "./dist/crypto.js",
-      "require": "./dist/cjs/crypto.js"
+      "require": "./dist/cjs/crypto.cjs"
     }
   },
   "files": [

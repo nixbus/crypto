@@ -28,16 +28,11 @@ async function main() {
     }),
     build({
       ...options,
-      outdir: './dist/cjs/lib',
+      outdir: './dist/cjs',
       format: 'cjs',
       outExtension: { '.js': '.cjs' }
     }),
   ])
-
-  const wrapperContent = `module.exports = require('./lib/crypto.cjs');`;
-  const wrapperPath = path.join(process.cwd(), 'dist/cjs/crypto.js');
-
-  await writeFile(wrapperPath, wrapperContent, 'utf8');
 }
 
 main()
