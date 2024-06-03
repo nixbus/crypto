@@ -109,7 +109,7 @@ export class NixBusCipherV1 implements NixBusCipher {
       {
         name: 'PBKDF2',
         salt: salt,
-        iterations: 10000,
+        iterations: 1000,
         hash: 'SHA-256',
       },
       keyMaterial,
