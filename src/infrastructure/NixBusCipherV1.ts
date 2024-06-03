@@ -12,9 +12,11 @@ type CipherData = {
 
 export class NixBusCipherV1 implements NixBusCipher {
   private readonly version: string
+  private keyCache: Map<string, Uint8Array>
 
   constructor() {
     this.version = 'nb-c1'
+    this.keyCache = new Map()
   }
 
   public async decrypt(text: string, passphrase: Passphrase): Promise<string> {
@@ -78,11 +80,26 @@ export class NixBusCipherV1 implements NixBusCipher {
   }
 
   private async deriveKey(passphrase: string, salt = crypto.getRandomValues(new Uint8Array(16))) {
+    const cacheKey = `${passphrase}:${Buffer.from(salt).toString('hex')}`
+
+    if (this.keyCache.has(cacheKey)) {
+      const cachedKey = this.keyCache.get(cacheKey)
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        cachedKey!,
+        { name: 'AES-GCM' },
+        false,
+        ['encrypt', 'decrypt'],
+      )
+      return { key: keyMaterial, salt }
+    }
+
     const encoder = new TextEncoder()
+    const passphraseBuffer = encoder.encode(passphrase)
 
     const keyMaterial = await crypto.subtle.importKey(
       'raw',
-      encoder.encode(passphrase),
+      passphraseBuffer,
       { name: 'PBKDF2' },
       false,
       ['deriveKey'],
@@ -92,7 +109,7 @@ export class NixBusCipherV1 implements NixBusCipher {
       {
         name: 'PBKDF2',
         salt: salt,
-        iterations: 100000,
+        iterations: 10000,
         hash: 'SHA-256',
       },
       keyMaterial,
@@ -100,6 +117,9 @@ export class NixBusCipherV1 implements NixBusCipher {
       true,
       ['encrypt', 'decrypt'],
     )
+
+    const exportedKey = await crypto.subtle.exportKey('raw', key)
+    this.keyCache.set(cacheKey, new Uint8Array(exportedKey))
 
     return { key, salt }
   }
