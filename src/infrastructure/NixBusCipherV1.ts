@@ -80,7 +80,8 @@ export class NixBusCipherV1 implements NixBusCipher {
   }
 
   private async deriveKey(passphrase: string, salt = crypto.getRandomValues(new Uint8Array(16))) {
-    const cacheKey = `${passphrase}:${Buffer.from(salt).toString('hex')}`
+    const s = btoa(String.fromCharCode(...salt))
+    const cacheKey = `${passphrase}:${s}`
 
     if (this.keyCache.has(cacheKey)) {
       const cachedKey = this.keyCache.get(cacheKey)
