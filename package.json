@@ -1,6 +1,6 @@
 {
   "name": "@nixbus/crypto",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "NixBus Crypto",
   "module": "dist/crypto.js",
   "main": "dist/cjs/crypto.cjs",
